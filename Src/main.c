@@ -29,37 +29,8 @@
 
 #include<stdio.h>
 #include "AHT20-21_DEMO_V1_3.h" 
-//#include "AHT20-21_DEMO_V1_3.h" 
-/* USER CODE END Includes */
 
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
-
-/* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
-
-/* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
 
 
 int fputc(int ch,FILE *f)
@@ -75,66 +46,31 @@ int fputc(int ch,FILE *f)
 
 
 
-/* USER CODE END 0 */
-
-/**
-  * @brief  The application entry point.
-  * @retval int
-  */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
 	uint32_t CT_data[2]={0,0};
 	volatile int  c1,t1;
-	/***********************************************************************************/
-	/**///①刚上电，产品芯片内部就绪需要时间，延时100~500ms,建议500ms
-	/***********************************************************************************/
+	
 	Delay_1ms(500);
-	/***********************************************************************************/
-	/**///②上电第一次发0x71读取状态字，判断状态字是否为0x18,如果不是0x18,进行寄存器初始化
-	/***********************************************************************************/
 
+	HAL_Init();
 
-  /* USER CODE END 1 */
+	SystemClock_Config();
 
-  /* MCU Configuration--------------------------------------------------------*/
-
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
-
-  /* USER CODE BEGIN Init */
-
-  /* USER CODE END Init */
-
-  /* Configure the system clock */
-  SystemClock_Config();
-
-  /* USER CODE BEGIN SysInit */
-
-  /* USER CODE END SysInit */
-
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  //MX_I2C1_Init();
-  MX_DMA_Init();
-  MX_USART1_UART_Init();
+	MX_GPIO_Init();
+	MX_DMA_Init();
+	MX_USART1_UART_Init();
+	
+	//初始化AHT20
 	AHT20_Init();
 	Delay_1ms(500);
-  /* USER CODE BEGIN 2 */
-	if((AHT20_Read_Status()&0x18)!=0x18)
-	{
-		AHT20_Start_Init(); //重新初始化寄存器
-		Delay_1ms(10);
-	}
-  /* USER CODE END 2 */
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
   while (1)
   { 
     /* USER CODE END WHILE */
 		AHT20_Read_CTdata(CT_data);       //不经过CRC校验，直接读取AHT20的温度和湿度数据    推荐每隔大于1S读一次
-    //AHT20_Read_CTdata_crc(CT_data);  //crc校验后，读取AHT20的温度和湿度数据 
+		//AHT20_Read_CTdata_crc(CT_data);  //crc校验后，读取AHT20的温度和湿度数据 
 	
 
 		c1 = CT_data[0]*1000/1024/1024;  //计算得到湿度值c1（放大了10倍）

@@ -59,7 +59,7 @@ void Delay_1ms(uint32_t t)		//延时函数
 //	RCC_APB2PeriphClockCmd(CC_APB2Periph_GPIOB,ENABLE);
 //}
 
-void SDA_Pin_Output_High(void)   //将PB15配置为输出 ， 并设置为高电平， PB15作为I2C的SDA
+void SDA_Pin_Output_High(void)   //将PB7配置为输出 ， 并设置为高电平， PB7作为I2C的SDA
 {
 	GPIO_InitTypeDef  GPIO_InitStruct;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;//推挽输出
@@ -69,7 +69,7 @@ void SDA_Pin_Output_High(void)   //将PB15配置为输出 ， 并设置为高电平， PB15作为
 	HAL_GPIO_WritePin(GPIOB,SDA_Pin,GPIO_PIN_SET);
 }
 
-void SDA_Pin_Output_Low(void)  //将P15配置为输出  并设置为低电平
+void SDA_Pin_Output_Low(void)  //将P7配置为输出  并设置为低电平
 {
 	GPIO_InitTypeDef  GPIO_InitStruct;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;//推挽输出
@@ -274,13 +274,13 @@ void AHT20_SendAC(void) //向AHT20发送AC命令
 
 	I2C_Start();
 	AHT20_WR_Byte(0x70);
-	printf("%d",Receive_ACK());
+	Receive_ACK();
 	AHT20_WR_Byte(0xac);//0xAC采集命令
-	printf("%d",Receive_ACK());
+	Receive_ACK();
 	AHT20_WR_Byte(0x33);
-	printf("%d",Receive_ACK());
+	Receive_ACK();
 	AHT20_WR_Byte(0x00);
-	printf("%d",Receive_ACK());
+	Receive_ACK();
 	Stop_I2C();
 
 }
@@ -507,35 +507,4 @@ void AHT20_Start_Init(void)
 	JH_Reset_REG(0x1e);
 }
 
-//int32_t main(void)
-//{
-//    uint32_t CT_data[2];
-//	volatile int  c1,t1;
-//	/***********************************************************************************/
-//	/**///①刚上电，产品芯片内部就绪需要时间，延时100~500ms,建议500ms
-//	/***********************************************************************************/
-//	Delay_1ms(500);
-//	/***********************************************************************************/
-//	/**///②上电第一次发0x71读取状态字，判断状态字是否为0x18,如果不是0x18,进行寄存器初始化
-//	/***********************************************************************************/
-//	if((AHT20_Read_Status()&0x18)!=0x18)
-//	{
-//	AHT20_Start_Init(); //重新初始化寄存器
-//	Delay_1ms(10);
-//	}
-//	
-//	/***********************************************************************************/
-//	/**///③根据客户自己需求发测量命令读取温湿度数据，当前while（1）循环发测量命令读取温湿度数据，仅供参考
-//	/***********************************************************************************/
-//	while(1)
-//	{
-//	 AHT20_Read_CTdata(CT_data);       //不经过CRC校验，直接读取AHT20的温度和湿度数据    推荐每隔大于1S读一次
-//    //AHT20_Read_CTdata_crc(CT_data);  //crc校验后，读取AHT20的温度和湿度数据 
-//	
 
-//	 c1 = CT_data[0]*100*10/1024/1024;  //计算得到湿度值c1（放大了10倍）
-//	 t1 = CT_data[1]*200*10/1024/1024-500;//计算得到温度值t1（放大了10倍）
-//	////下一步客户处理显示数据，
-//	 }
-
-// }	

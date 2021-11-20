@@ -9,10 +9,10 @@ void Delay_4us(void);		//延时函数
 void Delay_5us(void);		//延时函数
 void Delay_1ms(uint32_t t);	
 void AHT20_Clock_Init(void);		//延时函数
-void SDA_Pin_Output_High(void)  ; //将PB15配置为输出 ， 并设置为高电平， PB15作为I2C的SDA
-void SDA_Pin_Output_Low(void);  //将P15配置为输出  并设置为低电平
+void SDA_Pin_Output_High(void)  ; //将PB7配置为输出 ， 并设置为高电平， PB7作为I2C的SDA
+void SDA_Pin_Output_Low(void);  //将P7配置为输出  并设置为低电平
 void SDA_Pin_IN_FLOATING(void);  //SDA配置为浮空输入
-void SCL_Pin_Output_High(void); //SCL输出高电平，P14作为I2C的SCL
+void SCL_Pin_Output_High(void); //SCL输出高电平，P6作为I2C的SCL
 void SCL_Pin_Output_Low(void); //SCL输出低电平
 void Init_I2C_Sensor_Port(void); //初始化I2C接口,输出为高电平
 void I2C_Start(void);		 //I2C主机发送START信号
